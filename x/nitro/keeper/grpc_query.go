@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"encoding/hex"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -21,10 +22,9 @@ func (k Keeper) Params(ctx context.Context, req *types.QueryParamsRequest) (*typ
 
 func (k Keeper) RecordedTransactionData(ctx context.Context, req *types.QueryRecordedTransactionDataRequest) (*types.QueryRecordedTransactionDataResponse, error) {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
-
 	txs, err := k.GetTransactionData(sdkCtx, req.Slot)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("unable to retrieve data: %w", err)
 	}
 
 	hexTxs := []string{}
@@ -38,7 +38,7 @@ func (k Keeper) StateRoot(ctx context.Context, req *types.QueryStateRootRequest)
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	root, err := k.GetStateRoot(sdkCtx, req.Slot)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("unable to get state root: %w", err)
 	}
 
 	return &types.QueryStateRootResponse{Root: hex.EncodeToString(root)}, nil
