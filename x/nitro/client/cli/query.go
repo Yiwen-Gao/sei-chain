@@ -41,13 +41,13 @@ func GetParams() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
-				return err
+				return fmt.Errorf("unable to get context: %w", err)
 			}
 			queryClient := types.NewQueryClient(clientCtx)
 
 			res, err := queryClient.Params(cmd.Context(), &types.QueryParamsRequest{})
 			if err != nil {
-				return err
+				return fmt.Errorf("unable to query params: %w", err)
 			}
 
 			return clientCtx.PrintProto(res)
@@ -67,19 +67,19 @@ func GetCmdRecordedTransactionData() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
-				return err
+				return fmt.Errorf("unable to get context: %w", err)
 			}
 			queryClient := types.NewQueryClient(clientCtx)
 			slot, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
-				return err
+				return fmt.Errorf("unable to parse argument: %w", err)
 			}
 
 			res, err := queryClient.RecordedTransactionData(cmd.Context(), &types.QueryRecordedTransactionDataRequest{
 				Slot: slot,
 			})
 			if err != nil {
-				return err
+				return fmt.Errorf("unable to query transaction data: %w", err)
 			}
 
 			return clientCtx.PrintProto(res)
@@ -99,19 +99,19 @@ func GetCmdStateRoot() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
-				return err
+				return fmt.Errorf("unable to get context: %w", err)
 			}
 			queryClient := types.NewQueryClient(clientCtx)
 			slot, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
-				return err
+				return fmt.Errorf("unable to parse argument: %w", err)
 			}
 
 			res, err := queryClient.StateRoot(cmd.Context(), &types.QueryStateRootRequest{
 				Slot: slot,
 			})
 			if err != nil {
-				return err
+				return fmt.Errorf("unable to query state root: %w", err)
 			}
 
 			return clientCtx.PrintProto(res)
@@ -131,19 +131,19 @@ func GetCmdSender() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
-				return err
+				return fmt.Errorf("unable to get context: %w", err)
 			}
 			queryClient := types.NewQueryClient(clientCtx)
 			slot, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
-				return err
+				return fmt.Errorf("unable to parse argument: %w", err)
 			}
 
 			res, err := queryClient.Sender(cmd.Context(), &types.QuerySenderRequest{
 				Slot: slot,
 			})
 			if err != nil {
-				return err
+				return fmt.Errorf("unable to query sender: %w", err)
 			}
 
 			return clientCtx.PrintProto(res)
